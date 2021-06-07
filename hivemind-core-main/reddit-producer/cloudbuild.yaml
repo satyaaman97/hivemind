@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/reddit-producer', '-t', 'gcr.io/$PROJECT_ID/reddit-producer:$SHORT_SHA', '.']
+  dir: 'reddit-producer'
+images: ['gcr.io/$PROJECT_ID/reddit-producer']

@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: reddit-api-keys
+type: Opaque
+data:
+  CLIENT_ID: alN0cnZyZnVXRm91cEE=
+  CLIENT_SECRET: Y1RpS1hiVUpjUlpvN0tWY0FVMGNFY2JDUUNmNU5n
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reddit-producer
+spec:
+  selector:
+    matchLabels:
+      app: reddit-producer
+  template:
+    metadata:
+      labels:
+        app: reddit-producer
+    spec:
+      containers:
+      - name: reddit-producer
+        image: gcr.io/tenacious-camp-304921/reddit-producer:latest
+        env:
+          - name: MONGO_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-cred
+                key: MONGO_ROOT_USERNAME
+          - name: MONGO_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-cred
+                key: MONGO_ROOT_PASSWORD
+          - name: CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: reddit-api-keys
+                key: CLIENT_ID
+          - name: CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: reddit-api-keys
+                key: CLIENT_SECRET
