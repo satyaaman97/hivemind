@@ -1,6 +1,7 @@
 import concurrent.futures
 import itertools
 import os
+import logging
 from concurrent.futures import ThreadPoolExecutor
 from enum import Enum, auto
 from threading import Thread, Lock
@@ -12,6 +13,8 @@ from praw.models import Comment, Submission
 from praw.models.util import stream_generator
 from prawcore.exceptions import PrawcoreException
 from pymongo import MongoClient
+
+logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 SUBREDDITS = ("wallstreetbets",)
 
@@ -177,4 +180,5 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.info('starting reddit-producer')
     main()
